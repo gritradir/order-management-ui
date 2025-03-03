@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  # Frontend (Angular)
+  ui:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: order_management_ui
+    restart: always
+    ports:
+      - "${UI_PORT:-80}:80"
+    environment:
+      - NODE_ENV=${NODE_ENV:-production}
+      - API_URL=${API_URL:-http://localhost:3000/api}
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - order_ui_network
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:80"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+networks:
+  order_ui_network:
+    driver: bridge

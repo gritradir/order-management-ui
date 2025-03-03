@@ -1,0 +1,187 @@
+<div class="container mx-auto p-4">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-2xl font-bold">Create New Order</h1>
+    <a routerLink="/orders" class="text-blue-600 hover:text-blue-800">
+      &larr; Back to Orders
+    </a>
+  </div>
+
+  <div *ngIf="errorMessage" class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4" role="alert">
+    <p class="font-medium">Error</p>
+    <p>{{ errorMessage }}</p>
+  </div>
+
+  <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    <form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Order Number -->
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="orderNumber">
+            Order Number *
+          </label>
+          <input
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            [ngClass]="{'border-red-500': hasError('orderNumber', 'required') || hasError('orderNumber', 'pattern')}"
+            id="orderNumber"
+            type="text"
+            placeholder="e.g., ORD-12345"
+            formControlName="orderNumber">
+          <div class="mt-1">
+            <p *ngIf="hasError('orderNumber', 'required')" class="text-red-500 text-xs italic">Order number is required</p>
+            <p *ngIf="hasError('orderNumber', 'pattern')" class="text-red-500 text-xs italic">Only letters, numbers, and hyphens are allowed</p>
+            <p *ngIf="hasError('orderNumber', 'maxlength')" class="text-red-500 text-xs italic">Order number is too long</p>
+          </div>
+        </div>
+
+        <!-- Payment Description -->
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="paymentDescription">
+            Payment Description *
+          </label>
+          <input
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            [ngClass]="{'border-red-500': hasError('paymentDescription', 'required')}"
+            id="paymentDescription"
+            type="text"
+            placeholder="e.g., Software subscription"
+            formControlName="paymentDescription">
+          <div class="mt-1">
+            <p *ngIf="hasError('paymentDescription', 'required')" class="text-red-500 text-xs italic">Payment description is required</p>
+            <p *ngIf="hasError('paymentDescription', 'maxlength')" class="text-red-500 text-xs italic">Description is too long</p>
+          </div>
+        </div>
+
+        <!-- Street Address -->
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="streetAddress">
+            Street Address *
+          </label>
+          <input
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            [ngClass]="{'border-red-500': hasError('streetAddress', 'required')}"
+            id="streetAddress"
+            type="text"
+            placeholder="e.g., 123 Main Street"
+            formControlName="streetAddress">
+          <div class="mt-1">
+            <p *ngIf="hasError('streetAddress', 'required')" class="text-red-500 text-xs italic">Street address is required</p>
+            <p *ngIf="hasError('streetAddress', 'maxlength')" class="text-red-500 text-xs italic">Address is too long</p>
+          </div>
+        </div>
+
+        <!-- Town -->
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="town">
+            Town *
+          </label>
+          <input
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            [ngClass]="{'border-red-500': hasError('town', 'required')}"
+            id="town"
+            type="text"
+            placeholder="e.g., Tallinn"
+            formControlName="town">
+          <div class="mt-1">
+            <p *ngIf="hasError('town', 'required')" class="text-red-500 text-xs italic">Town is required</p>
+            <p *ngIf="hasError('town', 'maxlength')" class="text-red-500 text-xs italic">Town name is too long</p>
+          </div>
+        </div>
+
+        <!-- Country -->
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="country">
+            Country *
+          </label>
+          <input
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            [ngClass]="{'border-red-500': hasError('country', 'required')}"
+            id="country"
+            type="text"
+            placeholder="e.g., Estonia"
+            formControlName="country">
+          <div class="mt-1">
+            <p *ngIf="hasError('country', 'required')" class="text-red-500 text-xs italic">Country is required</p>
+            <p *ngIf="hasError('country', 'maxlength')" class="text-red-500 text-xs italic">Country name is too long</p>
+          </div>
+        </div>
+
+        <!-- Amount -->
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="amount">
+            Amount *
+          </label>
+          <input
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            [ngClass]="{'border-red-500': hasError('amount', 'required') || hasError('amount', 'min') || hasError('amount', 'pattern')}"
+            id="amount"
+            type="number"
+            step="0.01"
+            min="0.01"
+            placeholder="e.g., 99.99"
+            formControlName="amount">
+          <div class="mt-1">
+            <p *ngIf="hasError('amount', 'required')" class="text-red-500 text-xs italic">Amount is required</p>
+            <p *ngIf="hasError('amount', 'min') || hasError('amount', 'pattern')" class="text-red-500 text-xs italic">
+              Please enter a valid amount (greater than 0)
+            </p>
+          </div>
+        </div>
+
+        <!-- Currency -->
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="currency">
+            Currency *
+          </label>
+          <select
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            [ngClass]="{'border-red-500': hasError('currency', 'required')}"
+            id="currency"
+            formControlName="currency">
+            <option *ngFor="let currency of currencies" [value]="currency.code">{{ currency.name }}</option>
+          </select>
+          <div class="mt-1">
+            <p *ngIf="hasError('currency', 'required')" class="text-red-500 text-xs italic">Currency is required</p>
+          </div>
+        </div>
+
+        <!-- Payment Due Date -->
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="paymentDueDate">
+            Payment Due Date *
+          </label>
+          <input
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            [ngClass]="{'border-red-500': hasError('paymentDueDate', 'required')}"
+            id="paymentDueDate"
+            type="date"
+            [min]="minDate"
+            formControlName="paymentDueDate">
+          <div class="mt-1">
+            <p *ngIf="hasError('paymentDueDate', 'required')" class="text-red-500 text-xs italic">Payment due date is required</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between mt-6">
+        <button 
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" 
+          type="submit"
+          [disabled]="isSubmitting">
+          <span *ngIf="isSubmitting" class="inline-block mr-2">
+            <svg class="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+          </span>
+          {{ isSubmitting ? 'Creating...' : 'Create Order' }}
+        </button>
+        <button 
+          class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" 
+          type="button"
+          (click)="resetForm()">
+          Reset
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

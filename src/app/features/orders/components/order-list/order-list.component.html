@@ -1,0 +1,119 @@
+<div class="container mx-auto p-4">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-2xl font-bold">Orders</h1>
+    <a routerLink="/create" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+      + New Order
+    </a>
+  </div>
+
+  <!-- Filters -->
+  <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-6">
+    <h2 class="text-xl font-semibold mb-4">Filters</h2>
+    
+    <form [formGroup]="filterForm" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <!-- Country Filter -->
+      <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="country">
+          Country
+        </label>
+        <select
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          id="country"
+          formControlName="country">
+          <option value="">All Countries</option>
+          <option *ngFor="let country of countries" [value]="country">{{ country }}</option>
+        </select>
+      </div>
+
+      <!-- Description Filter -->
+      <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="description">
+          Description
+        </label>
+        <input
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          id="description"
+          type="text"
+          placeholder="Search by description..."
+          formControlName="description">
+      </div>
+
+      <!-- Clear Filters Button -->
+      <div class="mb-4 flex items-end">
+        <button 
+          class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          type="button"
+          (click)="clearFilters()">
+          Clear Filters
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Error message -->
+  <div *ngIf="error && !isLoading" class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4" role="alert">
+    <p class="font-medium">Error</p>
+    <p>{{ error }}</p>
+    <button 
+      (click)="loadOrders()" 
+      class="mt-2 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded text-sm">
+      Try Again
+    </button>
+  </div>
+
+  <!-- Empty state -->
+  <div *ngIf="!isLoading && !error && orders.length === 0" class="text-center py-8 bg-gray-50 rounded">
+    <h3 class="mt-2 text-sm font-medium text-gray-900">No orders found</h3>
+    <p class="mt-1 text-sm text-gray-500">Get started by creating a new order or adjust your filters.</p>
+    <div class="mt-6">
+      <a routerLink="/create" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
+        Create New Order
+      </a>
+    </div>
+  </div>
+
+  <!-- Orders table -->
+  <div *ngIf="!isLoading && !error && orders.length > 0" class="overflow-x-auto">
+    <table class="min-w-full bg-white border border-gray-200">
+      <thead>
+        <tr class="bg-gray-100 text-gray-600 uppercase text-sm leading-normal">
+          <th class="py-3 px-6 text-left border-b">Order #</th>
+          <th class="py-3 px-6 text-left border-b">Description</th>
+          <th class="py-3 px-6 text-left border-b">Location</th>
+          <th class="py-3 px-6 text-right border-b">Amount</th>
+          <th class="py-3 px-6 text-center border-b">Due Date</th>
+          <th class="py-3 px-6 text-center border-b">Unique ID</th>
+        </tr>
+      </thead>
+      <tbody class="text-gray-600 text-sm">
+        <tr *ngFor="let order of orders" 
+            class="border-b border-gray-200 hover:bg-gray-50 transition-colors"
+            [ngClass]="{'bg-blue-50': order.country === 'Estonia'}">
+          <td class="py-3 px-6 text-left whitespace-nowrap">
+            <span class="font-medium">{{ order.orderNumber }}</span>
+          </td>
+          <td class="py-3 px-6 text-left">
+            {{ order.paymentDescription }}
+          </td>
+          <td class="py-3 px-6 text-left">
+            <div>{{ order.town }}, {{ order.country }}</div>
+            <div class="text-xs text-gray-500">{{ order.streetAddress }}</div>
+          </td>
+          <td class="py-3 px-6 text-right">
+            <span [ngClass]="{'text-green-600 font-medium': order.amount > 1000}">
+              {{ formatCurrency(order.amount, order.currency) }}
+            </span>
+          </td>
+          <td class="py-3 px-6 text-center">
+            {{ formatDate(order.paymentDueDate) }}
+          </td>
+          <td class="py-3 px-6 text-center">
+            <span class="bg-gray-200 px-2 py-1 rounded font-mono text-xs">
+              {{ order.uniqueId }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

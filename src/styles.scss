@@ -1,0 +1,30 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* Global styles without direct Tailwind imports */
+html, body {
+    font-family: 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    margin: 0;
+    padding: 0;
+    color: #1f2937;
+    background-color: #f9fafb;
+}
+
+.py-4 {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+.px-4 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.bg-white {
+    background-color: white;
+}
+
+.text-2xl {
+    font-size: 1.5rem;
+}

@@ -1,0 +1,38 @@
+// Custom styles for app component
+// Note: With Tailwind, we typically minimize custom CSS
+
+// Add smooth scrolling to the page
+:host {
+    display: block;
+  }
+  
+  // Add transition for active route highlights
+  a.active {
+    transition: all 0.2s ease-in-out;
+  }
+  
+  // Add subtle hover effects to buttons and links
+  button, a {
+    &:focus {
+      outline: 2px solid rgba(99, 102, 241, 0.4);
+      outline-offset: 2px;
+    }
+  }
+  
+  // Custom scrollbar for modern browsers
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: #c7d2fe;
+    border-radius: 4px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: #818cf8;
+  }
