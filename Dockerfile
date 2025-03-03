@@ -1,5 +1,5 @@
 # Build stage
-FROM node:18-alpine AS build
+FROM node:22 AS build
 
 WORKDIR /app
 
@@ -17,16 +17,21 @@ ARG CONFIGURATION=production
 RUN npm run build -- --configuration ${CONFIGURATION}
 
 # Production stage
-FROM nginx:alpine
+FROM node:22-slim AS production
 
-# Remove default nginx config
-RUN rm -rf /etc/nginx/conf.d/*
+WORKDIR /app
+
+# Copy package files for production dependencies
+COPY package*.json ./
+
+# Install only production dependencies
+RUN npm ci --omit=dev
 
 # Copy built application from build stage
-COPY --from=build /app/dist/order-management-ui /usr/share/nginx/html
+COPY --from=build /app/dist /app/dist
 
-# Copy nginx configuration (if not mounted as volume)
-COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
+# Set node environment
+ENV NODE_ENV=production
 
 # Add health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=30s --retries=3 \
@@ -35,5 +40,8 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=30s --retries=3 \
 # Expose port 80
 EXPOSE 80
 
-# Start Nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Set environment variable for port
+ENV PORT=80
+
+# Start the application
+CMD ["node", "dist/order-management-ui/server/server.mjs"]

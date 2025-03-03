@@ -6,8 +6,6 @@ import { CommonModule, NgClass, NgIf } from '@angular/common';
 
 import { OrderService } from '../../services/order.service';
 import { CreateOrderDto } from '../../../../shared/models/create-order.model';
-import { LoadingSpinnerComponent } from '../../../../shared/components/loading-spinner/loading-spinner.component';
-
 
 @Component({
   selector: 'app-create-order',
@@ -16,7 +14,6 @@ import { LoadingSpinnerComponent } from '../../../../shared/components/loading-s
     CommonModule,
     ReactiveFormsModule,
     RouterLink,
-    LoadingSpinnerComponent,
     NgClass,
     NgIf
   ],

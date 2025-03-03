@@ -8,7 +8,6 @@ import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { Order } from '../../../../shared/models/order.model';
 import { OrderService } from '../../services/order.service';
 import { OrderFilter } from '../../../../shared/models/order-filter.model';
-import { LoadingSpinnerComponent } from '../../../../shared/components/loading-spinner/loading-spinner.component';
 
 @Component({
   selector: 'app-order-list',
@@ -17,7 +16,6 @@ import { LoadingSpinnerComponent } from '../../../../shared/components/loading-s
     CommonModule,
     ReactiveFormsModule,
     RouterLink,
-    LoadingSpinnerComponent,
     NgClass
   ],
   templateUrl: './order-list.component.html',
